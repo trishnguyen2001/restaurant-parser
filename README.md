@@ -15,6 +15,6 @@ Python 3.11 and above works
 4. Execute pip install -U flask-cors
 5. Run Flask server
 ```bash
-cd ~/restaurant-parser/backend
-[path to python.exe] server.py
+cd ~/restaurant-parser
+[path to python.exe] backend/server.py
 ```

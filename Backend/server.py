@@ -1,15 +1,33 @@
 from flask import Flask, abort, make_response, request, jsonify, render_template, redirect, url_for, session
 from flask_cors import CORS
 from datetime import datetime
+import time
+
+from antlr4 import *
+from Restaurant import Restaurant
+from ExprLexer import ExprLexer
+from ExprParser import ExprParser
+from MyExprVisitor import MyExprVisitor
 
 app = Flask(__name__)
 CORS(app)
 
 
 def handleUserInput(prompt):
-    if (prompt == "cat"):
-        return "=^owo^="
-    return ("User prompt parsed: " + prompt)
+    print("user prompt = " + prompt)
+    if (prompt == "testing"):
+        return "It works!"
+
+    lexer = ExprLexer(prompt)
+    stream = CommonTokenStream(lexer)
+    parser = ExprParser(stream)
+    tree = parser.prog()
+
+    print("tree starting")
+    response = MyExprVisitor(r).visitInfixExpr(tree)
+    time.sleep(5)
+
+    return response.__str__
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -29,4 +47,5 @@ def user_input():
 
 if __name__ == '__main__':
     app.debug = True
+    r = Restaurant()
     app.run()

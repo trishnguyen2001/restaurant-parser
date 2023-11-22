@@ -105,10 +105,8 @@ function Home() {
       const data = await response.json();
       console.log(response.status, data);
       setServerError({ status: response.status, message: data.message });
-
-      if (response.ok) {
-        alert(data);
-      }
+      alert(data);
+      
       setIsFetching(false); 
   };
 

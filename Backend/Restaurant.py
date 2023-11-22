@@ -4,7 +4,7 @@ from ExprVisitor import ExprVisitor
 
 class Restaurant():
     def __init__(self):
-        self.balance = 0
+        self.balance = 1000.00
         self.ingredient_inventory = []
         self.dish_inventory = []
 

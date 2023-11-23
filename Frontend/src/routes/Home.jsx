@@ -48,7 +48,7 @@ const Input1 = styled.input`
 `;
 
 const Label = styled.h3`
-  font-size: 26px;
+  font-size: 24px;
   font-weight: 400;
   padding: 0px 0px 60px 0px
   margin: 0px 0px 100px 0px;
@@ -154,13 +154,12 @@ function Home() {
                     <span>{'>>    '}{parserResponse}</span>
                   
             </Output> 
-
-            <InfoText>
-              Please input your instructions in the box below!
-            </InfoText>
           </div>
 
           <div>
+            <InfoText>
+              Please input your instructions in the box below!
+            </InfoText>
             <form autocomplete="off" onSubmit={onSubmit}>
                 <div style={{ flex: 1 }}>
                   <Input1

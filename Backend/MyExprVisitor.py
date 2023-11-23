@@ -12,7 +12,15 @@ class MyExprVisitor(ExprVisitor):
     # Visit a parse tree produced by ExprParser#prog.
     def visitProg(self, ctx: ExprParser.ProgContext):
         print("[MyExprVisitor] visitProg()")
-        return self.visit(ctx.expr())  # Just visit the self expression
+        response = "Default parser response " + self.restaurant.balance
+
+        if ctx.OP_SHOWBALANCE():
+            response = self.restaurant.balance
+
+        self.stack.append(response)
+        print("[MyExprVisitor] visitProg() --> FINISHED")
+        return response
+        # return self.visit(ctx.expr())  # Just visit the self expression
 
     # Visit a parse tree produced by ExprParser#infixExpr.
     def visitInfixExpr(self, ctx: ExprParser.ExprContext):
@@ -25,12 +33,13 @@ class MyExprVisitor(ExprVisitor):
         # a = self.stack.pop()
         # c = None
 
-        response = None
+        response = "Default parser response"
 
         if ctx.OP_SHOWBALANCE():
             response = self.restaurant.balance
 
         self.stack.append(response)
+        print("[MyExprVisitor] visitInfixExpr() --> FINISHED")
         return response
 
     # Visit a parse tree produced by ExprParser#numberExpr.

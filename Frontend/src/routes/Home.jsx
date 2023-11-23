@@ -132,6 +132,7 @@ function Home() {
         setParserResponse(data);
       
       setIsFetching(false); 
+      setUserPrompt("");
     };
 
 

@@ -28,9 +28,10 @@ def handleUserInput(prompt):
         tree = parser.prog()
         print("MyExprVisitor(r).visitProg(tree) starting...")
         parserRes = MyExprVisitor(session.get("r")).visitProg(tree)
-        time.sleep(5)
-        print("Parsing finished!")
         session['parsedResponse'] = parserRes
+        print("Parsing finished! --> parserRes = ", parserRes)
+        time.sleep(3)
+        
 
 @app.route('/', methods=['GET', 'POST'])
 def user_input():

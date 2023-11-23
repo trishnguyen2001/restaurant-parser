@@ -1,4 +1,4 @@
-# Generated from cs152_Project/Expr.g4 by ANTLR 4.13.1
+# Generated from Expr.g4 by ANTLR 4.13.1
 # encoding: utf-8
 from antlr4 import *
 from io import StringIO
@@ -10,7 +10,7 @@ else:
 
 def serializedATN():
     return [
-        4,1,4,10,2,0,7,0,2,1,7,1,1,0,1,0,1,0,1,1,1,1,1,1,0,0,2,0,2,0,0,7,
+        4,1,3,10,2,0,7,0,2,1,7,1,1,0,1,0,1,0,1,1,1,1,1,1,0,0,2,0,2,0,0,7,
         0,4,1,0,0,0,2,7,1,0,0,0,4,5,3,2,1,0,5,6,5,0,0,1,6,1,1,0,0,0,7,8,
         5,1,0,0,8,3,1,0,0,0,0
     ]
@@ -27,7 +27,7 @@ class ExprParser ( Parser ):
 
     literalNames = [ "<INVALID>", "'SHOW_BALANCE'" ]
 
-    symbolicNames = [ "<INVALID>", "OP_SHOWBALANCE", "NEWLINE", "INT", "WS" ]
+    symbolicNames = [ "<INVALID>", "OP_SHOWBALANCE", "NEWLINE", "WS" ]
 
     RULE_prog = 0
     RULE_expr = 1
@@ -37,8 +37,7 @@ class ExprParser ( Parser ):
     EOF = Token.EOF
     OP_SHOWBALANCE=1
     NEWLINE=2
-    INT=3
-    WS=4
+    WS=3
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)

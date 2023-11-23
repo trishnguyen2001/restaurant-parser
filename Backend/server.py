@@ -1,6 +1,6 @@
-from flask import Flask, abort, make_response, request, jsonify, render_template, redirect, url_for, session
+from flask import Flask, abort, make_response, request, jsonify, session
 from flask_cors import CORS
-from datetime import datetime
+from flask_session import Session
 import time
 
 from antlr4 import *
@@ -11,24 +11,26 @@ from MyExprVisitor import MyExprVisitor
 
 app = Flask(__name__)
 CORS(app)
-
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 def handleUserInput(prompt):
     print("user prompt = " + prompt)
     if (prompt == "testing"):
-        return "It works!"
-
-    lexer = ExprLexer(prompt)
-    stream = CommonTokenStream(lexer)
-    parser = ExprParser(stream)
-    tree = parser.prog()
-
-    print("tree starting")
-    response = MyExprVisitor(r).visitInfixExpr(tree)
-    time.sleep(5)
-
-    return response.__str__
-
+        session['parsedResponse'] = "It works!"
+    elif(prompt == "SHOW_BALANCE"):
+        print("SHOW_BALANCE called!")
+        lexer = ExprLexer(InputStream(prompt))
+        stream = CommonTokenStream(lexer)
+        parser = ExprParser(stream)
+        print("parser.prog() starting...")
+        tree = parser.prog()
+        print("MyExprVisitor(r).visitProg(tree) starting...")
+        parserRes = MyExprVisitor(session.get("r")).visitProg(tree)
+        time.sleep(5)
+        print("Parsing finished!")
+        session['parsedResponse'] = parserRes
 
 @app.route('/', methods=['GET', 'POST'])
 def user_input():
@@ -36,16 +38,21 @@ def user_input():
     try:
         # parse user prompt
         print("Flask server request received")
-        response = handleUserInput(data['userPrompt'])
-        return jsonify(response)
+        handleUserInput(data['userPrompt'])
+        if (session.get("parsedResponse") == None):
+            session['parsedResponse'] = "No response"
+        print("parsedResponse = ", session.get("parsedResponse"))
     except Exception as e:
-        abort(make_response(jsonify({
-            'error': 'An error occurred',
-            'message': str(e)}), 500)
-        )
+        session['parsedResponse'] = "ERROR: " + str(e)
+        # abort(make_response(jsonify({
+        #     'error': 'An error occurred',
+        #     'message': str(e)}), 500)
+        # )
+    return(jsonify(session.get("parsedResponse")))
 
 
 if __name__ == '__main__':
     app.debug = True
-    r = Restaurant()
     app.run()
+    session['parsedResponse'] = None
+    session['r'] = Restaurant()

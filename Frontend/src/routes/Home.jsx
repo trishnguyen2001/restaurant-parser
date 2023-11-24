@@ -113,6 +113,7 @@ function Home() {
       console.log(`body = ${JSON.stringify(body)}`);
 
       setIsFetching(true);
+      setParserResponse("Parsing...")
       const response = await fetch(
           `${SERVER_URL}`, {
           method: "POST",
@@ -151,6 +152,7 @@ function Home() {
             <Title>Welcome to Restaurant Parser!</Title>
             <Output>
                     <Label>Output</Label>
+
                     <br></br>
                     <span>{'>>    '}{parserResponse}</span>
                   

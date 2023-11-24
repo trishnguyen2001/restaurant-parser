@@ -1,4 +1,4 @@
-# Generated from backend/Expr.g4 by ANTLR 4.13.1
+# Generated from Expr.g4 by ANTLR 4.13.1
 from antlr4 import *
 if "." in __name__:
     from .ExprParser import ExprParser
@@ -17,12 +17,21 @@ class ExprListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by ExprParser#expr.
-    def enterExpr(self, ctx:ExprParser.ExprContext):
+    # Enter a parse tree produced by ExprParser#prompt.
+    def enterPrompt(self, ctx:ExprParser.PromptContext):
         pass
 
-    # Exit a parse tree produced by ExprParser#expr.
-    def exitExpr(self, ctx:ExprParser.ExprContext):
+    # Exit a parse tree produced by ExprParser#prompt.
+    def exitPrompt(self, ctx:ExprParser.PromptContext):
+        pass
+
+
+    # Enter a parse tree produced by ExprParser#command.
+    def enterCommand(self, ctx:ExprParser.CommandContext):
+        pass
+
+    # Exit a parse tree produced by ExprParser#command.
+    def exitCommand(self, ctx:ExprParser.CommandContext):
         pass
 
 

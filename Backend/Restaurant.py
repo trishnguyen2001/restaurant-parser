@@ -1,12 +1,17 @@
-from ExprParser import ExprParser
-from ExprVisitor import ExprVisitor
-
-
 class Restaurant():
     def __init__(self):
         self.balance = 1000.00
         self.ingredient_inventory = []
         self.dish_inventory = []
+
+    def setBalance(self, balance):
+        self.balance = balance
+
+    def setIngrList(self, ingredient_inventory):
+        self.ingredient_inventory = ingredient_inventory
+
+    def setDishList(self, dish_inventory):
+        self.dish_inventory = dish_inventory
 
     # Restaurant cooks a new dish
     def cook(self, name, ingr_list, price, cooking_method, temp, cooking_time):

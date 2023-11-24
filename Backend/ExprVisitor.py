@@ -1,4 +1,4 @@
-# Generated from backend/Expr.g4 by ANTLR 4.13.1
+# Generated from Expr.g4 by ANTLR 4.13.1
 from antlr4 import *
 if "." in __name__:
     from .ExprParser import ExprParser
@@ -14,8 +14,13 @@ class ExprVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by ExprParser#expr.
-    def visitExpr(self, ctx:ExprParser.ExprContext):
+    # Visit a parse tree produced by ExprParser#prompt.
+    def visitPrompt(self, ctx:ExprParser.PromptContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by ExprParser#command.
+    def visitCommand(self, ctx:ExprParser.CommandContext):
         return self.visitChildren(ctx)
 
 

@@ -27,7 +27,13 @@ class MyExprVisitor(ExprVisitor):
         response = "Default parser response"
         if ctx.OP_SHOWBALANCE():
             print("[MyExprVisitor] visitCommand(): ctx.OP_SHOWBALANCE")
-            response = "$" + '{0:.2f}'.format(self.restaurant.balance)
+            response = "BALANCE = $" + '{0:.2f}'.format(self.restaurant.balance)
+        elif ctx.OP_SHOWINVENTORY():
+            print("[MyExprVisitor] visitCommand(): ctx.OP_SHOWINVENTORY")
+            response = "INVENTORY = " + str(self.restaurant.ingredient_inventory)
+        elif ctx.OP_BUY():
+            print("[MyExprVisitor] visitCommand(): ctx.OP_BUY")
+            response = self.restaurant.buy(ctx.quantity(), ctx.ingredient())
         self.stack.append(response)
         print("[MyExprVisitor] visitCommand() --> FINISHED")
         return response

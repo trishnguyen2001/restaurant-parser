@@ -10,10 +10,10 @@ else:
 
 def serializedATN():
     return [
-        4,1,5,14,2,0,7,0,2,1,7,1,2,2,7,2,1,0,1,0,1,0,1,1,1,1,1,2,1,2,1,2,
-        0,0,3,0,2,4,0,0,10,0,6,1,0,0,0,2,9,1,0,0,0,4,11,1,0,0,0,6,7,3,2,
-        1,0,7,8,5,0,0,1,8,1,1,0,0,0,9,10,3,4,2,0,10,3,1,0,0,0,11,12,5,1,
-        0,0,12,5,1,0,0,0,0
+        4,1,8,14,2,0,7,0,2,1,7,1,2,2,7,2,1,0,1,0,1,0,1,1,1,1,1,2,1,2,1,2,
+        0,0,3,0,2,4,0,1,1,0,1,3,10,0,6,1,0,0,0,2,9,1,0,0,0,4,11,1,0,0,0,
+        6,7,3,2,1,0,7,8,5,0,0,1,8,1,1,0,0,0,9,10,3,4,2,0,10,3,1,0,0,0,11,
+        12,7,0,0,0,12,5,1,0,0,0,0
     ]
 
 class ExprParser ( Parser ):
@@ -26,9 +26,10 @@ class ExprParser ( Parser ):
 
     sharedContextCache = PredictionContextCache()
 
-    literalNames = [ "<INVALID>", "<INVALID>", "'('", "')'" ]
+    literalNames = [  ]
 
-    symbolicNames = [ "<INVALID>", "OP_SHOWBALANCE", "OPEN_PAREN", "CLOSE_PAREN", 
+    symbolicNames = [ "<INVALID>", "OP_SHOWBALANCE", "OP_SHOWINVENTORY", 
+                      "OP_BUY", "QUANTITY", "INGREDIENTLIST", "INGREDIENT", 
                       "NEWLINE", "WS" ]
 
     RULE_prog = 0
@@ -39,10 +40,13 @@ class ExprParser ( Parser ):
 
     EOF = Token.EOF
     OP_SHOWBALANCE=1
-    OPEN_PAREN=2
-    CLOSE_PAREN=3
-    NEWLINE=4
-    WS=5
+    OP_SHOWINVENTORY=2
+    OP_BUY=3
+    QUANTITY=4
+    INGREDIENTLIST=5
+    INGREDIENT=6
+    NEWLINE=7
+    WS=8
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
@@ -164,6 +168,12 @@ class ExprParser ( Parser ):
         def OP_SHOWBALANCE(self):
             return self.getToken(ExprParser.OP_SHOWBALANCE, 0)
 
+        def OP_SHOWINVENTORY(self):
+            return self.getToken(ExprParser.OP_SHOWINVENTORY, 0)
+
+        def OP_BUY(self):
+            return self.getToken(ExprParser.OP_BUY, 0)
+
         def getRuleIndex(self):
             return ExprParser.RULE_command
 
@@ -188,10 +198,16 @@ class ExprParser ( Parser ):
 
         localctx = ExprParser.CommandContext(self, self._ctx, self.state)
         self.enterRule(localctx, 4, self.RULE_command)
+        self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 11
-            self.match(ExprParser.OP_SHOWBALANCE)
+            _la = self._input.LA(1)
+            if not((((_la) & ~0x3f) == 0 and ((1 << _la) & 14) != 0)):
+                self._errHandler.recoverInline(self)
+            else:
+                self._errHandler.reportMatch(self)
+                self.consume()
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)

@@ -1,7 +1,21 @@
 class Restaurant():
+    ingredient_prices = {
+        "beef" : 10.50,
+        "potato" : 0.99, 
+        "rice" :  4.99,
+        "chicken" : 7.99,
+        "asparagus" : 4.99,
+        "lettuce" : 3.99,
+        "tomato" : 0.99,
+        "cucumber" : 0.99,
+        "broccoli" : 1.99,
+        "salmon" : 8.99,
+        "pasta" : 5.35,
+    }
+
     def __init__(self):
         self.balance = 1000.00
-        self.ingredient_inventory = []
+        self.ingredient_inventory = ["salt", "pepper", "sugar"]
         self.dish_inventory = []
 
     def setBalance(self, balance):
@@ -19,9 +33,13 @@ class Restaurant():
             Dish(name, ingr_list, price, cooking_method, temp, cooking_time))
 
     # Restaurant buys an ingredient for a certain price
-    def buy(self, ingredient, price):
-        self.ingredient_inventory.append(ingredient)
-        self.balance -= price
+    def buy(self, quantity, ingredient):
+        i = 0
+        while(i < quantity):
+            self.ingredient_inventory.append(ingredient)
+            i+=1
+        self.balance -= quantity * self.ingredient_prices[ingredient]
+        return "Bought " + quantity + " " + ingredient + "(s) | Remaining Balance = $" + '{0:.2f}'.format(self.balance)
 
     # Restaurant sells a dish for a certain price
     def sell(self, dish, price):

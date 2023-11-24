@@ -36,7 +36,7 @@ class RestaurantSessionInterface(SessionInterface):
                 sid = self.generate_sid()
             if self.restaurant is None:
                 print("[RestaurantSession.py] open_session(): no restaurant")
-                self.restaurant = Restaurant.__init__(self)
+                self.restaurant = Restaurant()
             print("[RestaurantSession.py] open_session(): restaurant = ", self.restaurant, "\n$", self.restaurant.balance, ", ingrList: ", self.restaurant.ingredient_inventory, ", dishList: ", self.restaurant.dish_inventory)
             rSession = self.session_class(sid=sid, new=True, restaurant=self.restaurant)
             print("[RestaurantSession.py] open_session(): rSession restaurant = ", rSession.restaurant)
@@ -47,7 +47,7 @@ class RestaurantSessionInterface(SessionInterface):
         balance = request.cookies.get('balance')
         ingrList = json.loads(request.cookies.get('ingrList'))
         dishList = json.loads(request.cookies.get('dishList'))
-        r = Restaurant.__init__(self)
+        r = Restaurant()
         r.setBalance(balance)
         r.setIngrList(ingrList)
         r.setDishList(dishList)

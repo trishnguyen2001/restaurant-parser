@@ -31,7 +31,7 @@ class MyExprVisitor(ExprVisitor):
             response = "BALANCE = $" + '{0:.2f}'.format(self.restaurant.balance)
         elif ctx.OP_SHOWINVENTORY():
             print("[MyExprVisitor] visitCommand(): ctx.OP_SHOWINVENTORY")
-            response = "INVENTORY = " + str(self.restaurant.ingredient_inventory)
+            response = "INVENTORY = " + str(self.restaurant.get_inventory())
         elif ctx.OP_BUY():
             print("[MyExprVisitor] visitCommand(): ctx.OP_BUY")
             print("ingredient = ", ctx.quantity.text)

@@ -24,6 +24,7 @@ class MyExprVisitor(ExprVisitor):
     # Visit a parse tree produced by ExprParser#command
     def visitCommand(self, ctx: ExprParser.CommandContext):
         print("[MyExprVisitor] visitCommand()")
+
         response = "Default parser response"
         if ctx.OP_SHOWBALANCE():
             print("[MyExprVisitor] visitCommand(): ctx.OP_SHOWBALANCE")
@@ -33,7 +34,9 @@ class MyExprVisitor(ExprVisitor):
             response = "INVENTORY = " + str(self.restaurant.ingredient_inventory)
         elif ctx.OP_BUY():
             print("[MyExprVisitor] visitCommand(): ctx.OP_BUY")
-            response = self.restaurant.buy(ctx.quantity(), ctx.ingredient())
+            print("ingredient = ", ctx.quantity.text)
+            print("quantity = " , ctx.ingredient.text)
+            response = self.restaurant.buy(int(ctx.quantity.text), ctx.ingredient.text)
+
         self.stack.append(response)
         print("[MyExprVisitor] visitCommand() --> FINISHED")
-        return response

@@ -3,7 +3,11 @@ grammar Expr;
 /* Parser Rules */
 prog: prompt EOF;
 prompt: command;
-command: (OP_SHOWBALANCE | OP_SHOWINVENTORY | OP_BUY);
+command: (
+    OP_SHOWBALANCE | 
+    OP_SHOWINVENTORY | 
+    (OP_BUY '(' quantity=QUANTITY ',' ingredient=INGREDIENT ')')
+);
 /* param: OPEN_PAREN INGREDIENT+ CLOSE_PAREN */
 
 /* Lexer Rules */
@@ -34,21 +38,21 @@ fragment X: ('X' | 'x');
 fragment Y: ('Y' | 'y');
 fragment Z: ('Z' | 'z');
 
-fragment OPEN_PAREN : '(';
-fragment CLOSE_PAREN : ')';
+/* fragment OPEN_PAREN : '('; */
+/* fragment CLOSE_PAREN : ')';*/
 fragment OPEN_BRACKET : '[';
 fragment CLOSE_BRACKET : ']';
 fragment UNDERSCORE: ('_');
-fragment COMMA : ',';
+/* fragment COMMA : ',';*/
 fragment DIGIT : [0-9];
 
 OP_SHOWBALANCE : S H O W UNDERSCORE B A L A N C E;
 OP_SHOWINVENTORY : S H O W UNDERSCORE I N V E N T O R Y;
-OP_BUY : B U Y OPEN_PAREN QUANTITY COMMA INGREDIENT CLOSE_PAREN;
+OP_BUY : B U Y;
 
 QUANTITY : (DIGIT)+;
 INGREDIENTLIST : (OPEN_BRACKET 
-    (INGREDIENT ( COMMA INGREDIENT )* )?
+    (INGREDIENT ( ',' INGREDIENT )* )?
 CLOSE_BRACKET);
 
 INGREDIENT : (

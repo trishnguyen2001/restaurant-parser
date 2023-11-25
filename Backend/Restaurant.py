@@ -19,7 +19,7 @@ class Restaurant():
         self.dish_inventory = []
 
     def setBalance(self, balance):
-        self.balance = balance
+        self.balance = float(balance)
 
     def setIngrList(self, ingredient_inventory):
         self.ingredient_inventory = ingredient_inventory
@@ -28,20 +28,23 @@ class Restaurant():
         self.dish_inventory = dish_inventory
 
     # Restaurant cooks a new dish
+    # OP_NEWDISH
     def cook(self, name, ingr_list, price, cooking_method, temp, cooking_time):
         self.dish_inventory.append(
             Dish(name, ingr_list, price, cooking_method, temp, cooking_time))
 
     # Restaurant buys an ingredient for a certain price
+    # OP_BUY
     def buy(self, quantity, ingredient):
         i = 0
         while(i < quantity):
             self.ingredient_inventory.append(ingredient)
             i+=1
         self.balance -= quantity * self.ingredient_prices[ingredient]
-        return "Bought " + quantity + " " + ingredient + "(s) | Remaining Balance = $" + '{0:.2f}'.format(self.balance)
+        return "Bought " + ingredient + " (" + str(quantity) + ")"
 
     # Restaurant sells a dish for a certain price
+    # OP_SELL
     def sell(self, dish, price):
         if (self.dish_inventory.__contains__(dish)):
             self.dish_inventory.remove(dish)

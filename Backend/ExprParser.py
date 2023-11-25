@@ -10,10 +10,13 @@ else:
 
 def serializedATN():
     return [
-        4,1,8,14,2,0,7,0,2,1,7,1,2,2,7,2,1,0,1,0,1,0,1,1,1,1,1,2,1,2,1,2,
-        0,0,3,0,2,4,0,1,1,0,1,3,10,0,6,1,0,0,0,2,9,1,0,0,0,4,11,1,0,0,0,
-        6,7,3,2,1,0,7,8,5,0,0,1,8,1,1,0,0,0,9,10,3,4,2,0,10,3,1,0,0,0,11,
-        12,7,0,0,0,12,5,1,0,0,0,0
+        4,1,11,22,2,0,7,0,2,1,7,1,2,2,7,2,1,0,1,0,1,0,1,1,1,1,1,2,1,2,1,
+        2,1,2,1,2,1,2,1,2,1,2,3,2,20,8,2,1,2,0,0,3,0,2,4,0,0,20,0,6,1,0,
+        0,0,2,9,1,0,0,0,4,19,1,0,0,0,6,7,3,2,1,0,7,8,5,0,0,1,8,1,1,0,0,0,
+        9,10,3,4,2,0,10,3,1,0,0,0,11,20,5,4,0,0,12,20,5,5,0,0,13,14,5,6,
+        0,0,14,15,5,1,0,0,15,16,5,7,0,0,16,17,5,2,0,0,17,18,5,9,0,0,18,20,
+        5,3,0,0,19,11,1,0,0,0,19,12,1,0,0,0,19,13,1,0,0,0,20,5,1,0,0,0,1,
+        19
     ]
 
 class ExprParser ( Parser ):
@@ -26,11 +29,11 @@ class ExprParser ( Parser ):
 
     sharedContextCache = PredictionContextCache()
 
-    literalNames = [  ]
+    literalNames = [ "<INVALID>", "'('", "','", "')'" ]
 
-    symbolicNames = [ "<INVALID>", "OP_SHOWBALANCE", "OP_SHOWINVENTORY", 
-                      "OP_BUY", "QUANTITY", "INGREDIENTLIST", "INGREDIENT", 
-                      "NEWLINE", "WS" ]
+    symbolicNames = [ "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
+                      "OP_SHOWBALANCE", "OP_SHOWINVENTORY", "OP_BUY", "QUANTITY", 
+                      "INGREDIENTLIST", "INGREDIENT", "NEWLINE", "WS" ]
 
     RULE_prog = 0
     RULE_prompt = 1
@@ -39,14 +42,17 @@ class ExprParser ( Parser ):
     ruleNames =  [ "prog", "prompt", "command" ]
 
     EOF = Token.EOF
-    OP_SHOWBALANCE=1
-    OP_SHOWINVENTORY=2
-    OP_BUY=3
-    QUANTITY=4
-    INGREDIENTLIST=5
-    INGREDIENT=6
-    NEWLINE=7
-    WS=8
+    T__0=1
+    T__1=2
+    T__2=3
+    OP_SHOWBALANCE=4
+    OP_SHOWINVENTORY=5
+    OP_BUY=6
+    QUANTITY=7
+    INGREDIENTLIST=8
+    INGREDIENT=9
+    NEWLINE=10
+    WS=11
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
@@ -164,6 +170,8 @@ class ExprParser ( Parser ):
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
+            self.quantity = None # Token
+            self.ingredient = None # Token
 
         def OP_SHOWBALANCE(self):
             return self.getToken(ExprParser.OP_SHOWBALANCE, 0)
@@ -173,6 +181,12 @@ class ExprParser ( Parser ):
 
         def OP_BUY(self):
             return self.getToken(ExprParser.OP_BUY, 0)
+
+        def QUANTITY(self):
+            return self.getToken(ExprParser.QUANTITY, 0)
+
+        def INGREDIENT(self):
+            return self.getToken(ExprParser.INGREDIENT, 0)
 
         def getRuleIndex(self):
             return ExprParser.RULE_command
@@ -198,16 +212,36 @@ class ExprParser ( Parser ):
 
         localctx = ExprParser.CommandContext(self, self._ctx, self.state)
         self.enterRule(localctx, 4, self.RULE_command)
-        self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 11
-            _la = self._input.LA(1)
-            if not((((_la) & ~0x3f) == 0 and ((1 << _la) & 14) != 0)):
-                self._errHandler.recoverInline(self)
+            self.state = 19
+            self._errHandler.sync(self)
+            token = self._input.LA(1)
+            if token in [4]:
+                self.state = 11
+                self.match(ExprParser.OP_SHOWBALANCE)
+                pass
+            elif token in [5]:
+                self.state = 12
+                self.match(ExprParser.OP_SHOWINVENTORY)
+                pass
+            elif token in [6]:
+                self.state = 13
+                self.match(ExprParser.OP_BUY)
+                self.state = 14
+                self.match(ExprParser.T__0)
+                self.state = 15
+                localctx.quantity = self.match(ExprParser.QUANTITY)
+                self.state = 16
+                self.match(ExprParser.T__1)
+                self.state = 17
+                localctx.ingredient = self.match(ExprParser.INGREDIENT)
+                self.state = 18
+                self.match(ExprParser.T__2)
+                pass
             else:
-                self._errHandler.reportMatch(self)
-                self.consume()
+                raise NoViableAltException(self)
+
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)

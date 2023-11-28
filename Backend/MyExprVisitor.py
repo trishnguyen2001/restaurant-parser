@@ -46,9 +46,10 @@ class MyExprVisitor(ExprVisitor):
             response = self.restaurant.new_dish(ctx.dishname.text, ctx.cooking_method.text, int(ctx.temperature.text), int(ctx.cooking_time.text))
         elif ctx.OP_SELL():
             print("[MyExprVisitor] visitCommand(): ctx.OP_SELL")
-            print("ingredient = ", ctx.quantity.text)
-            print("quantity = " , ctx.dish.text)
+            print("quantity = ", ctx.quantity.text)
+            print("dish = " , ctx.dish.text)
             response = self.restaurant.sell(int(ctx.quantity.text), ctx.dish.text)
+            
 
         self.stack.append(response)
         print("[MyExprVisitor] visitCommand() --> FINISHED")

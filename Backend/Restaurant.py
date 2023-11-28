@@ -11,6 +11,7 @@ class Restaurant():
         "broccoli" : 1.99,
         "salmon" : 8.99,
         "pasta" : 5.35,
+        "flour" : 1.99
     }
 
     dish_prices = {
@@ -24,19 +25,19 @@ class Restaurant():
 
     recipes = {
         "Tee's Salmon" : ["salmon", "asparagus", "rice"], 
-        "Trish's Chicken" : ["chicken", "brocolli", "rice"], 
+        "Trish's Chicken" : ["chicken", "broccoli", "rice"], 
         "Spaghetti" : ["pasta", "beef", "tomato"], 
         "Ravioli" : ["beef", "pasta", "tomato"], 
-        "TNT Burger" : ["beef", "flour", "lettuce", "tomato"], 
+        "TNT Burger" : ["beef", "lettuce", "tomato"], 
         "Skinny Salad" : ["lettuce", "cucumber", "tomato", "chicken"],
     }
 
     temps = {
-        "Tee's Salmon" : [120, 145], 
-        "Trish's Chicken" : [165, 180],
+        "Tee's Salmon" : [380, 420], 
+        "Trish's Chicken" : [550, 650],
         "Spaghetti" : [212, 212], 
         "Ravioli" : [212, 212], 
-        "TNT Burger" : [160, 200], 
+        "TNT Burger" : [550, 650], 
         "Skinny Salad" : [0, 0],
     }
 
@@ -50,12 +51,12 @@ class Restaurant():
     }
 
     cooking_times = {
-        "Tee's Salmon" : 12, 
-        "Trish's Chicken" : 9,
-        "Spaghetti" : 15, 
-        "Ravioli" : 15, 
-        "TNT Burger" : 10, 
-        "Skinny Salad" : 10,
+        "Tee's Salmon" : 25, 
+        "Trish's Chicken" : 15,
+        "Spaghetti" : 8, 
+        "Ravioli" : 8, 
+        "TNT Burger" : 12, 
+        "Skinny Salad" : 0,
     }
 
     def __init__(self):
@@ -114,11 +115,15 @@ class Restaurant():
     # OP_BUY
     def buy(self, quantity, ingredient):
         i = 0
-        while(i < quantity):
-            self.ingredient_inventory.append(ingredient)
-            i+=1
-        self.balance -= quantity * self.ingredient_prices[ingredient]
-        return "Bought " + ingredient + " (" + str(quantity) + ")"
+        if(ingredient in self.ingredient_prices):
+            while(i < quantity):
+                self.ingredient_inventory.append(ingredient)
+                i+=1
+            self.balance -= quantity * self.ingredient_prices[ingredient]
+            return "Bought " + ingredient + " (" + str(quantity) + ")"
+        else:
+            return "Ingredient not in our approved ingredients list."
+        
 
     # Restaurant sells a dish for a certain price
     # OP_SELL
@@ -126,8 +131,9 @@ class Restaurant():
         i = 0
         sold = 0
         disclaimer = ""
-        while(i < quantity):
-            if (dish in self.dish_inventory):
+
+        if (dish in self.dish_inventory):
+            while(i < quantity):
                 sold+=1
                 self.dish_inventory.remove(dish)
                 self.balance += self.dish_prices[dish]

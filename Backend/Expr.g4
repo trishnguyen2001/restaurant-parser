@@ -7,7 +7,7 @@ command: (
     OP_SHOWBALANCE | 
     OP_SHOWINVENTORY | 
     (OP_BUY '(' quantity=NUMBER ',' ingredient=INGREDIENT ')') |
-    (OP_NEWDISH '(' price=NUMBER ',' temperature=NUMBER ')')
+    (OP_NEWDISH '(' dishname=DISHNAME ',' price=NUMBER ',' cooking_method=NUMBER ',' temperature=NUMBER ',' cooking_time=NUMBER ')')
 );
 /* param: OPEN_PAREN INGREDIENT+ CLOSE_PAREN */
 
@@ -50,10 +50,6 @@ OP_BUY : B U Y;
 OP_NEWDISH : N E W UNDERSCORE D I S H;
 
 NUMBER: (DIGIT)+;
-INGREDIENTLIST : (OPEN_BRACKET 
-    (INGREDIENT ( ',' INGREDIENT )* )?
-CLOSE_BRACKET);
-
 
 INGREDIENT : (
     (B E E F) | 
@@ -74,7 +70,7 @@ INGREDIENT : (
 DISHNAME : (
     (T R I S H C H I C K E N) | 
     (S P A G H E T T I) |
-    (R A V I O L I)
+    (R A V I O L I) |
     (T E E S A L M O N) | 
     (T N T B U R G E R) | 
     (S K I N N Y S A L A D) 

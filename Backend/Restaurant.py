@@ -13,7 +13,7 @@ class Restaurant():
         "pasta" : 5.35,
     }
 
-    cooking_method = {
+    cooking_method_enum = {
         1 : "sear",
         2 : "boil",
         3 : "bake"
@@ -60,17 +60,19 @@ class Restaurant():
     # Returns all ingredients and dishes the restaurant has
     def get_inventory(self):
         return self.ingredient_inventory
-    
-    def new_dish(self, price, temperature):
+
+    # Restaurant cooks a new dish
+    # OP_NEWDISH (experiment)
+    def new_dish(self, name, price, cooking_method, temperature, cooking_time):
         self.dish_inventory.append(
-            Dish( price, temperature))
+            Dish(name, price, cooking_method, temperature, cooking_time))
+        
 
 
 class Dish():
-    def __init__(self, price, temp):
-        #self.name = name
-        # self.ingr_list = ingr_list
+    def __init__(self, name, price, cooking_method, temp, cooking_time):
+        self.name = name
         self.price = price
-        #self.cooking_method = cooking_method
+        self.cooking_method = cooking_method
         self.temp = temp
-        #self.cooking_time = cooking_time
+        self.cooking_time = cooking_time

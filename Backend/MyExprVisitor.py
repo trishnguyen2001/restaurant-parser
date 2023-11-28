@@ -44,7 +44,7 @@ class MyExprVisitor(ExprVisitor):
             #print("cooking method = " , ctx.cooking_method.text)
             #print("temp = " , ctx.temperature.text)
             #print("cooking time = " , ctx.cooking_duration.text)
-            response = self.restaurant.new_dish(int(ctx.price.text), int(ctx.temperature.text))
+            #response = self.restaurant.new_dish(int(ctx.price.text), int(ctx.temperature.text))
 
         self.stack.append(response)
         print("[MyExprVisitor] visitCommand() --> FINISHED")

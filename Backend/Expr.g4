@@ -6,8 +6,8 @@ prompt: command;
 command: (
     OP_SHOWBALANCE | 
     OP_SHOWINVENTORY | 
-    (OP_BUY '(' quantity=QUANTITY ',' ingredient=INGREDIENT ')') |
-    (OP_NEWDISH '(' price=PRICE ',' temperature=TEMPERATURE ')')
+    (OP_BUY '(' quantity=NUMBER ',' ingredient=INGREDIENT ')') |
+    (OP_NEWDISH '(' price=NUMBER ',' temperature=NUMBER ')')
 );
 /* param: OPEN_PAREN INGREDIENT+ CLOSE_PAREN */
 
@@ -39,12 +39,9 @@ fragment X: ('X' | 'x');
 fragment Y: ('Y' | 'y');
 fragment Z: ('Z' | 'z');
 
-/* fragment OPEN_PAREN : '('; */
-/* fragment CLOSE_PAREN : ')';*/
 fragment OPEN_BRACKET : '[';
 fragment CLOSE_BRACKET : ']';
 fragment UNDERSCORE: ('_');
-/* fragment COMMA : ',';*/
 fragment DIGIT : [0-9];
 
 OP_SHOWBALANCE : S H O W UNDERSCORE B A L A N C E;
@@ -52,11 +49,7 @@ OP_SHOWINVENTORY : S H O W UNDERSCORE I N V E N T O R Y;
 OP_BUY : B U Y;
 OP_NEWDISH : N E W UNDERSCORE D I S H;
 
-QUANTITY : (DIGIT)+;
-PRICE : (DIGIT)+;
-COOKINGMETHOD : (DIGIT)+;
-TEMPERATURE : (DIGIT)+;
-COOKTIME : (DIGIT)+;
+NUMBER: (DIGIT)+;
 INGREDIENTLIST : (OPEN_BRACKET 
     (INGREDIENT ( ',' INGREDIENT )* )?
 CLOSE_BRACKET);
@@ -84,7 +77,7 @@ DISHNAME : (
     (R A V I O L I)
     (T E E S A L M O N) | 
     (T N T B U R G E R) | 
-    (S K I N N Y S A L A D) |
+    (S K I N N Y S A L A D) 
 );
 
 NEWLINE : [\r\n]+ ;

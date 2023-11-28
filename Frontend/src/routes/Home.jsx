@@ -12,6 +12,7 @@ const Container = styled.main`
 `;
 
 const InfoText = styled.div`
+  margin-top: 20px;
   text-align: center;
   font-size: 16px;
   font-weight: normal;
@@ -46,8 +47,27 @@ const Input1 = styled.input`
   font-weight: 400;
 `;
 
+const Label = styled.h3`
+  font-size: 24px;
+  font-weight: 400;
+  padding: 0px 0px 60px 0px
+  margin: 0px 0px 100px 0px;
+`;
+
+const Output = styled.div`
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: #1d5057;
+  border-radius: 15px;
+  padding: 20px;
+  width: 500px;
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 400;
+`;
+
 const SubmitButton = styled.button`
-  margin-top: 30px;
+  margin-top: 10px;
   width: 500px;
   height: 44px;
   padding: 15px;
@@ -76,22 +96,24 @@ const RightSide = styled.div`
 function Home() {
   const [isFetching, setIsFetching] = useState(false);
   const [userPrompt, setUserPrompt] = useState("");
+  const [parserResponse, setParserResponse] = useState("");
   const [serverError, setServerError] = useState({ status: 0, message: "" });
 
 
   const {
-    handleSubmit,
     register,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async () => {
+  const onSubmit = async (e) => {
+      e.preventDefault();
       const body = {
         userPrompt: userPrompt,
       };
       console.log(`body = ${JSON.stringify(body)}`);
 
       setIsFetching(true);
+      setParserResponse("Parsing...")
       const response = await fetch(
           `${SERVER_URL}`, {
           method: "POST",
@@ -103,14 +125,16 @@ function Home() {
       );
       console.log("Request sent to Flask server. Waiting for response...");
       const data = await response.json();
+
       console.log(response.status, data);
       setServerError({ status: response.status, message: data.message });
 
-      if (response.ok) {
-        alert(data);
-      }
+      if(response.ok)
+        setParserResponse(data);
+      
       setIsFetching(false); 
-  };
+      setUserPrompt("");
+    };
 
 
   return (
@@ -126,45 +150,57 @@ function Home() {
           >
 
             <Title>Welcome to Restaurant Parser!</Title>
+            <Output>
+                    <Label>Output</Label>
+
+                    <br></br>
+                    <span>{'>>    '}{parserResponse}</span>
+                  
+            </Output> 
+          </div>
+
+          <div>
             <InfoText>
               Please input your instructions in the box below!
             </InfoText>
-          </div>
-
-
-
-            <div>
-              <form onSubmit={onSubmit}>
-                  <div style={{ flex: 1 }}>
-                    <Input1
-                      {...register("userPrompt",
-                          {
-                                required: "Input is required",
-                            },
-                      )}
-                      style={{ color: "black" }}
-                      name="userPrompt"
-                      value={userPrompt}
-                      onChange={(e) => setUserPrompt(e.target.value)}
-                    />
-                    {errors.userPrompt && (
-                      <ErrorText className="error-text">
-                        <span>{errors.userPrompt.message.toString()}</span>
-                      </ErrorText>
+            <form autocomplete="off" onSubmit={onSubmit}>
+                <div style={{ flex: 1 }}>
+                  <Input1
+                    {...register("userPrompt",
+                        {
+                              required: "Input is required",
+                          },
                     )}
-                  </div>
-              </form>
+                    style={{ color: "black" }}
+                    placeholder="Input Here"
+                    name="userPrompt"
+                    value={userPrompt}
+                    onChange={(e) => setUserPrompt(e.target.value)}
+                  />
+                  {errors.userPrompt && (
+                    <ErrorText className="error-text">
+                      <span>{errors.userPrompt.message.toString()}</span>
+                    </ErrorText>
+                  )}
                 </div>
-                <div>
+            </form>
+              </div>
                 {serverError && (
                   <ErrorText className="error-text">
                     <span>{serverError.message}</span>
                   </ErrorText>
                 )}
-                <SubmitButton type="submit">
+                {/* <SubmitButton type="submit"> */}
+                <SubmitButton onClick={onSubmit}>
                   Submit
                 </SubmitButton>
-            </div>
+                
+              <div>
+          </div>
+
+          
+            
+          
         </RightSide>
       </Container>
     </>

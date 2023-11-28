@@ -1,6 +1,6 @@
 class Restaurant():
     ingredient_prices = {
-        "beef" : 10.50,
+        "beef" : 5.50,
         "potato" : 0.99, 
         "rice" :  4.99,
         "chicken" : 7.99,
@@ -78,11 +78,22 @@ class Restaurant():
         verdict = self.check_cooking(dish, cooking_method, temp, cooking_time)
 
         if(verdict == "Wow! You cooked that dish perfectly!"):
-            self.dish_inventory.append(dish)
-            return verdict + " (1 " + dish + " has been added to your inventory)"
-        
+            if(self.has_ingredients(dish)):
+                self.dish_inventory.append(dish)
+                for i in self.recipes[dish]:
+                    self.ingredient_inventory.remove(i)
+                return verdict + " (1 " + dish + " has been added to your inventory)"
+            else:
+                verdict = "You don't have the necessary ingredients"
         return verdict + " (Cooking failed)"
-        
+
+    # Helper method to check if user has all necessary ingredients
+    def has_ingredients(self, dish):
+        for i in self.recipes[dish]:
+            if(i not in self.ingredient_inventory):
+                return False
+        return True
+    
     # Helper method to check cooking method, temp, and time for a dish
     def check_cooking(self, dish, method, temp, time):
         if(dish == "Skinny Salad" and temp != 0):
@@ -116,7 +127,7 @@ class Restaurant():
         sold = 0
         disclaimer = ""
         while(i < quantity):
-            if (self.dish_inventory.__contains__(dish)):
+            if (dish in self.dish_inventory):
                 sold+=1
                 self.dish_inventory.remove(dish)
                 self.balance += self.dish_prices[dish]

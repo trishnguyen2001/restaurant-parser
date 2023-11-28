@@ -8,7 +8,7 @@ command: (
     OP_SHOWINVENTORY | 
     (OP_BUY '(' quantity=NUMBER ',' ingredient=INGREDIENT ')') |
     (OP_SELL '(' quantity=NUMBER ',' dish=DISHNAME ')') |
-    (OP_NEWDISH '(' dishname=DISHNAME ',' cooking_method=NUMBER ',' temperature=NUMBER ',' cooking_time=NUMBER ')')
+    (OP_NEWDISH '(' dishname=DISHNAME ',' cooking_method=COOKING_METHOD ',' temperature=NUMBER ',' cooking_time=NUMBER ')')
 );
 
 /* Lexer Rules */
@@ -76,6 +76,12 @@ DISHNAME : (
     (T E E APOSTROPHE S SPACE S A L M O N) |
     (T N T SPACE B U R G E R) |
     (S K I N N Y SPACE S A L A D)
+);
+COOKING_METHOD : (
+    (S E A R) |
+    (B A K E) |
+    (B O I L) |
+    (N O N E)
 );
 
 NEWLINE : [\r\n]+ ;

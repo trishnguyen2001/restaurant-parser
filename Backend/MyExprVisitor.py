@@ -43,7 +43,7 @@ class MyExprVisitor(ExprVisitor):
             print("cooking method = " , ctx.cooking_method.text)
             print("temp = " , ctx.temperature.text)
             print("cooking time = " , ctx.cooking_time.text)
-            response = self.restaurant.new_dish(ctx.dishname.text, int(ctx.cooking_method.text), int(ctx.temperature.text), int(ctx.cooking_time.text))
+            response = self.restaurant.new_dish(ctx.dishname.text, ctx.cooking_method.text, int(ctx.temperature.text), int(ctx.cooking_time.text))
         elif ctx.OP_SELL():
             print("[MyExprVisitor] visitCommand(): ctx.OP_SELL")
             print("ingredient = ", ctx.quantity.text)

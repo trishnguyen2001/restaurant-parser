@@ -10,7 +10,7 @@ else:
 
 def serializedATN():
     return [
-        4,1,13,38,2,0,7,0,2,1,7,1,2,2,7,2,1,0,1,0,1,0,1,1,1,1,1,2,1,2,1,
+        4,1,14,38,2,0,7,0,2,1,7,1,2,2,7,2,1,0,1,0,1,0,1,1,1,1,1,2,1,2,1,
         2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,
         2,1,2,1,2,1,2,1,2,1,2,3,2,36,8,2,1,2,0,0,3,0,2,4,0,0,38,0,6,1,0,
         0,0,2,9,1,0,0,0,4,35,1,0,0,0,6,7,3,2,1,0,7,8,5,0,0,1,8,1,1,0,0,0,
@@ -18,9 +18,10 @@ def serializedATN():
         0,0,14,15,5,1,0,0,15,16,5,9,0,0,16,17,5,2,0,0,17,18,5,10,0,0,18,
         36,5,3,0,0,19,20,5,7,0,0,20,21,5,1,0,0,21,22,5,9,0,0,22,23,5,2,0,
         0,23,24,5,11,0,0,24,36,5,3,0,0,25,26,5,8,0,0,26,27,5,1,0,0,27,28,
-        5,11,0,0,28,29,5,2,0,0,29,30,5,9,0,0,30,31,5,2,0,0,31,32,5,9,0,0,
-        32,33,5,2,0,0,33,34,5,9,0,0,34,36,5,3,0,0,35,11,1,0,0,0,35,12,1,
-        0,0,0,35,13,1,0,0,0,35,19,1,0,0,0,35,25,1,0,0,0,36,5,1,0,0,0,1,35
+        5,11,0,0,28,29,5,2,0,0,29,30,5,12,0,0,30,31,5,2,0,0,31,32,5,9,0,
+        0,32,33,5,2,0,0,33,34,5,9,0,0,34,36,5,3,0,0,35,11,1,0,0,0,35,12,
+        1,0,0,0,35,13,1,0,0,0,35,19,1,0,0,0,35,25,1,0,0,0,36,5,1,0,0,0,1,
+        35
     ]
 
 class ExprParser ( Parser ):
@@ -38,7 +39,7 @@ class ExprParser ( Parser ):
     symbolicNames = [ "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
                       "OP_SHOWBALANCE", "OP_SHOWINVENTORY", "OP_BUY", "OP_SELL", 
                       "OP_NEWDISH", "NUMBER", "INGREDIENT", "DISHNAME", 
-                      "NEWLINE", "WS" ]
+                      "COOKING_METHOD", "NEWLINE", "WS" ]
 
     RULE_prog = 0
     RULE_prompt = 1
@@ -58,8 +59,9 @@ class ExprParser ( Parser ):
     NUMBER=9
     INGREDIENT=10
     DISHNAME=11
-    NEWLINE=12
-    WS=13
+    COOKING_METHOD=12
+    NEWLINE=13
+    WS=14
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
@@ -212,6 +214,9 @@ class ExprParser ( Parser ):
         def DISHNAME(self):
             return self.getToken(ExprParser.DISHNAME, 0)
 
+        def COOKING_METHOD(self):
+            return self.getToken(ExprParser.COOKING_METHOD, 0)
+
         def getRuleIndex(self):
             return ExprParser.RULE_command
 
@@ -287,7 +292,7 @@ class ExprParser ( Parser ):
                 self.state = 28
                 self.match(ExprParser.T__1)
                 self.state = 29
-                localctx.cooking_method = self.match(ExprParser.NUMBER)
+                localctx.cooking_method = self.match(ExprParser.COOKING_METHOD)
                 self.state = 30
                 self.match(ExprParser.T__1)
                 self.state = 31

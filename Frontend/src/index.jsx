@@ -34,6 +34,15 @@ a {
 menu, ol, ul, li {
   list-style: none;
 }
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.center {
+  margin: auto;
+  width: 100%;
+}
 `;
 
 const client = new QueryClient();

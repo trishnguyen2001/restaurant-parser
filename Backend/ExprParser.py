@@ -10,13 +10,14 @@ else:
 
 def serializedATN():
     return [
-        4,1,11,22,2,0,7,0,2,1,7,1,2,2,7,2,1,0,1,0,1,0,1,1,1,1,1,2,1,2,1,
-        2,1,2,1,2,1,2,1,2,1,2,3,2,20,8,2,1,2,0,0,3,0,2,4,0,0,20,0,6,1,0,
-        0,0,2,9,1,0,0,0,4,19,1,0,0,0,6,7,3,2,1,0,7,8,5,0,0,1,8,1,1,0,0,0,
-        9,10,3,4,2,0,10,3,1,0,0,0,11,20,5,4,0,0,12,20,5,5,0,0,13,14,5,6,
-        0,0,14,15,5,1,0,0,15,16,5,7,0,0,16,17,5,2,0,0,17,18,5,9,0,0,18,20,
-        5,3,0,0,19,11,1,0,0,0,19,12,1,0,0,0,19,13,1,0,0,0,20,5,1,0,0,0,1,
-        19
+        4,1,13,28,2,0,7,0,2,1,7,1,2,2,7,2,1,0,1,0,1,0,1,1,1,1,1,2,1,2,1,
+        2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,3,2,26,8,2,1,2,0,0,
+        3,0,2,4,0,0,27,0,6,1,0,0,0,2,9,1,0,0,0,4,25,1,0,0,0,6,7,3,2,1,0,
+        7,8,5,0,0,1,8,1,1,0,0,0,9,10,3,4,2,0,10,3,1,0,0,0,11,26,5,4,0,0,
+        12,26,5,5,0,0,13,14,5,6,0,0,14,15,5,1,0,0,15,16,5,8,0,0,16,17,5,
+        2,0,0,17,18,5,10,0,0,18,26,5,3,0,0,19,20,5,7,0,0,20,21,5,1,0,0,21,
+        22,5,8,0,0,22,23,5,2,0,0,23,24,5,11,0,0,24,26,5,3,0,0,25,11,1,0,
+        0,0,25,12,1,0,0,0,25,13,1,0,0,0,25,19,1,0,0,0,26,5,1,0,0,0,1,25
     ]
 
 class ExprParser ( Parser ):
@@ -32,8 +33,9 @@ class ExprParser ( Parser ):
     literalNames = [ "<INVALID>", "'('", "','", "')'" ]
 
     symbolicNames = [ "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
-                      "OP_SHOWBALANCE", "OP_SHOWINVENTORY", "OP_BUY", "QUANTITY", 
-                      "INGREDIENTLIST", "INGREDIENT", "NEWLINE", "WS" ]
+                      "OP_SHOWBALANCE", "OP_SHOWINVENTORY", "OP_BUY", "OP_SELL", 
+                      "NUMBER", "INGREDIENTLIST", "INGREDIENT", "DISHNAME", 
+                      "NEWLINE", "WS" ]
 
     RULE_prog = 0
     RULE_prompt = 1
@@ -48,11 +50,13 @@ class ExprParser ( Parser ):
     OP_SHOWBALANCE=4
     OP_SHOWINVENTORY=5
     OP_BUY=6
-    QUANTITY=7
-    INGREDIENTLIST=8
-    INGREDIENT=9
-    NEWLINE=10
-    WS=11
+    OP_SELL=7
+    NUMBER=8
+    INGREDIENTLIST=9
+    INGREDIENT=10
+    DISHNAME=11
+    NEWLINE=12
+    WS=13
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
@@ -172,6 +176,7 @@ class ExprParser ( Parser ):
             self.parser = parser
             self.quantity = None # Token
             self.ingredient = None # Token
+            self.dish = None # Token
 
         def OP_SHOWBALANCE(self):
             return self.getToken(ExprParser.OP_SHOWBALANCE, 0)
@@ -182,11 +187,17 @@ class ExprParser ( Parser ):
         def OP_BUY(self):
             return self.getToken(ExprParser.OP_BUY, 0)
 
-        def QUANTITY(self):
-            return self.getToken(ExprParser.QUANTITY, 0)
+        def OP_SELL(self):
+            return self.getToken(ExprParser.OP_SELL, 0)
+
+        def NUMBER(self):
+            return self.getToken(ExprParser.NUMBER, 0)
 
         def INGREDIENT(self):
             return self.getToken(ExprParser.INGREDIENT, 0)
+
+        def DISHNAME(self):
+            return self.getToken(ExprParser.DISHNAME, 0)
 
         def getRuleIndex(self):
             return ExprParser.RULE_command
@@ -214,7 +225,7 @@ class ExprParser ( Parser ):
         self.enterRule(localctx, 4, self.RULE_command)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 19
+            self.state = 25
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [4]:
@@ -231,12 +242,26 @@ class ExprParser ( Parser ):
                 self.state = 14
                 self.match(ExprParser.T__0)
                 self.state = 15
-                localctx.quantity = self.match(ExprParser.QUANTITY)
+                localctx.quantity = self.match(ExprParser.NUMBER)
                 self.state = 16
                 self.match(ExprParser.T__1)
                 self.state = 17
                 localctx.ingredient = self.match(ExprParser.INGREDIENT)
                 self.state = 18
+                self.match(ExprParser.T__2)
+                pass
+            elif token in [7]:
+                self.state = 19
+                self.match(ExprParser.OP_SELL)
+                self.state = 20
+                self.match(ExprParser.T__0)
+                self.state = 21
+                localctx.quantity = self.match(ExprParser.NUMBER)
+                self.state = 22
+                self.match(ExprParser.T__1)
+                self.state = 23
+                localctx.dish = self.match(ExprParser.DISHNAME)
+                self.state = 24
                 self.match(ExprParser.T__2)
                 pass
             else:

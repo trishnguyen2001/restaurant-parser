@@ -6,9 +6,9 @@ prompt: command;
 command: (
     OP_SHOWBALANCE | 
     OP_SHOWINVENTORY | 
-    (OP_BUY '(' quantity=QUANTITY ',' ingredient=INGREDIENT ')')
+    (OP_BUY '(' quantity=NUMBER ',' ingredient=INGREDIENT ')') |
+    (OP_SELL '(' quantity=NUMBER ',' dish=DISHNAME ')')
 );
-/* param: OPEN_PAREN INGREDIENT+ CLOSE_PAREN */
 
 /* Lexer Rules */
 fragment A: ('A' | 'a');
@@ -38,19 +38,19 @@ fragment X: ('X' | 'x');
 fragment Y: ('Y' | 'y');
 fragment Z: ('Z' | 'z');
 
-/* fragment OPEN_PAREN : '('; */
-/* fragment CLOSE_PAREN : ')';*/
 fragment OPEN_BRACKET : '[';
 fragment CLOSE_BRACKET : ']';
 fragment UNDERSCORE: ('_');
-/* fragment COMMA : ',';*/
 fragment DIGIT : [0-9];
+fragment SPACE: ' ';
+fragment APOSTROPHE: '\'';
 
 OP_SHOWBALANCE : S H O W UNDERSCORE B A L A N C E;
 OP_SHOWINVENTORY : S H O W UNDERSCORE I N V E N T O R Y;
 OP_BUY : B U Y;
+OP_SELL : S E L L;
 
-QUANTITY : (DIGIT)+;
+NUMBER : (DIGIT)+;
 INGREDIENTLIST : (OPEN_BRACKET 
     (INGREDIENT ( ',' INGREDIENT )* )?
 CLOSE_BRACKET);
@@ -69,6 +69,16 @@ INGREDIENT : (
     (P A S T A) |
     (S U G A R) |
     (F L O U R)
+);
+
+
+DISHNAME : (
+    (T R I S H APOSTROPHE S SPACE C H I C K E N) |
+    (S P A G H E T T I) |
+    (R A V I O L I) |
+    (T E E APOSTROPHE S SPACE S A L M O N) |
+    (T N T SPACE B U R G E R) |
+    (S K I N N Y SPACE S A L A D)
 );
 
 NEWLINE : [\r\n]+ ;

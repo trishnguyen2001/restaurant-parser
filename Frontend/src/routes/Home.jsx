@@ -57,7 +57,8 @@ const Label = styled.h3`
 const Output = styled.div`
   margin-top: 10px;
   margin-bottom: 10px;
-  background-color: #1d5057;
+  
+  background-color: #2a63d4;
   border-radius: 15px;
   padding: 20px;
   width: 500px;
@@ -73,7 +74,7 @@ const SubmitButton = styled.button`
   padding: 15px;
   margin-bottom: 100px;
   border-radius: 20px;
-  background-color: #84b8bf;
+  background-color: #29509e;
   color: #ffffff;
   font-size: 16px;
   font-weight: 700;
@@ -81,8 +82,7 @@ const SubmitButton = styled.button`
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color:
-            #79dbe8
+    background-color:#2a63d4
   ;
   }
 `;
@@ -92,6 +92,7 @@ const RightSide = styled.div`
   border-radius: 10px;
   color: #293545;
 `;
+
 
 function Home() {
   const [isFetching, setIsFetching] = useState(false);
@@ -145,12 +146,17 @@ function Home() {
             style={{
               borderBottom: "1px solid #888",
               paddingBottom: "30px",
-              width: "500px ",
+              width: "800px",
             }}
           >
 
             <Title>Welcome to Restaurant Parser!</Title>
-            <Output>
+            <div>
+              <img 
+                src="https://cdn.discordapp.com/attachments/1164648584784916500/1178919263365513217/image.png?ex=6577e51f&is=6565701f&hm=9eb110e0867ed508e5291b8625172d9f8c1138d82d55755eb85d1e61c9de95be&" 
+                alt="Logo" width="70%"/>
+            </div>
+            <Output className="center">
                     <Label>Output</Label>
 
                     <br></br>
@@ -159,8 +165,9 @@ function Home() {
             </Output> 
           </div>
 
+
           <div>
-            <InfoText>
+            <InfoText >
               Please input your instructions in the box below!
             </InfoText>
             <form autocomplete="off" onSubmit={onSubmit}>
@@ -172,6 +179,7 @@ function Home() {
                           },
                     )}
                     style={{ color: "black" }}
+                    className="center"
                     placeholder="Input Here"
                     name="userPrompt"
                     value={userPrompt}
@@ -190,8 +198,8 @@ function Home() {
                     <span>{serverError.message}</span>
                   </ErrorText>
                 )}
-                {/* <SubmitButton type="submit"> */}
-                <SubmitButton onClick={onSubmit}>
+                
+                <SubmitButton className="center" onClick={onSubmit}>
                   Submit
                 </SubmitButton>
                 
